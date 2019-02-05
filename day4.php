@@ -2,16 +2,14 @@
 <?php
 #! nix-shell -i php -p php
 
-$guards = [];
-
 $input = explode("\n", file_get_contents('day4.txt'));
-
 usort($input, function ($a, $b) {
     $a = strtotime(substr($a, 1, 16));
     $b = strtotime(substr($b, 1, 16));
     return ($a < $b) ? -1 : (($a > $b) ? 1 : 0);
 });
 
+$guards = [];
 $currentGuard = null;
 $currentStart = null;
 foreach ($input as $line) {
@@ -30,12 +28,9 @@ foreach ($input as $line) {
             }
             $guards[$currentGuard][$step] += 1;
         }
-    } else {
-        echo $line, "\n";
     }
 }
 
-ksort($guards);
 $mostSleepy = [0, 0];
 foreach ($guards as $key => $item) {
     $sum = array_sum($item);
@@ -44,7 +39,6 @@ foreach ($guards as $key => $item) {
     }
 }
 
-ksort($guards[$mostSleepy[0]]);
 $bestMinute = [0, 0];
 foreach ($guards[$mostSleepy[0]] as $minute => $count) {
     if ($count > $bestMinute[1]) {
@@ -54,9 +48,8 @@ foreach ($guards[$mostSleepy[0]] as $minute => $count) {
 
 echo "Part 1: \n";
 echo "Guard ID: ", $mostSleepy[0], "\n";
-echo "Most sleepy minute: ", $bestMinute[0], "\n";
+echo "Minute: ", $bestMinute[0], "\n";
 echo "Answer: ", $bestMinute[0] * $mostSleepy[0], "\n\n";
-
 
 $bestMinute = [0, 0, 0];
 foreach ($guards as $guardId => $guard) {
